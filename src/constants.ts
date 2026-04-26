@@ -1,0 +1,67 @@
+import { Product } from './types';
+
+export const MOCK_PRODUCTS: Product[] = [
+  {
+    id: '1',
+    name: 'Precision Processor X1',
+    sku: 'PROC-X1-001',
+    category: 'Electronics',
+    quantity: 45,
+    minQuantity: 10,
+    price: 299.99,
+    supplier: 'LogicSystems Inc.',
+    lastUpdated: new Date().toISOString(),
+  },
+  {
+    id: '2',
+    name: 'High-Density RAM 16GB',
+    sku: 'MEM-HG-016',
+    category: 'Electronics',
+    quantity: 8,
+    minQuantity: 15,
+    price: 89.50,
+    supplier: 'LogicSystems Inc.',
+    lastUpdated: new Date().toISOString(),
+  },
+  {
+    id: '3',
+    name: 'Industrial Case G9',
+    sku: 'CASE-IN-G9',
+    category: 'Hardware',
+    quantity: 0,
+    minQuantity: 5,
+    price: 145.00,
+    supplier: 'BuildWorks',
+    lastUpdated: new Date().toISOString(),
+  },
+  {
+    id: '4',
+    name: 'Thermal Paste Pro',
+    sku: 'THRM-P-050',
+    category: 'Accessories',
+    quantity: 120,
+    minQuantity: 20,
+    price: 12.99,
+    supplier: 'CoolingSolutions',
+    lastUpdated: new Date().toISOString(),
+  },
+  {
+    id: '5',
+    name: 'SSD 1TB Ultra NW',
+    sku: 'STOR-US-1TB',
+    category: 'Electronics',
+    quantity: 25,
+    minQuantity: 8,
+    price: 159.00,
+    supplier: 'LogicSystems Inc.',
+    lastUpdated: new Date().toISOString(),
+  },
+];
+
+export const CATEGORIES = [
+  'Electronics',
+  'Hardware',
+  'Accessories',
+  'Software',
+  'Office Supplies',
+];
