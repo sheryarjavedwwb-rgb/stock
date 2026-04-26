@@ -1,6 +1,9 @@
 ---
 deployment:
   tasks:
-    # IMPORTANT: Replace 'sheryarj' with your actual cPanel username
+    # 1. BUILD LOCALLY: Run 'npm run build' on your computer before pushing.
+    # 2. SYNC DIST: Ensure the 'dist' folder is present or the content is uploaded.
+    # 3. SET USERNAME: Replace 'sheryarj' with your actual cPanel username.
     - export DEPLOYPATH=/home/sheryarj/public_html
-    - /bin/cp -r dist/* $DEPLOYPATH
+    - /bin/cp -rv dist/* $DEPLOYPATH
+    - /bin/cp -v dist/.htaccess $DEPLOYPATH || true
