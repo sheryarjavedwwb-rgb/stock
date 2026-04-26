@@ -25,12 +25,47 @@ import { Product, ProductStatus, InventoryStats } from './types';
 import { MOCK_PRODUCTS, CATEGORIES } from './constants';
 import { cn } from './lib/utils';
 
-const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const getApiKey = () => {
+  try {
+    // @ts-ignore
+    return (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) || '';
+  } catch {
+    return '';
+  }
+};
+
+let genAIInstance: GoogleGenAI | null = null;
+const getGenAI = () => {
+  if (!genAIInstance) {
+    const key = getApiKey();
+    genAIInstance = new GoogleGenAI({ apiKey: key || 'NO_KEY' });
+  }
+  return genAIInstance;
+};
+
+if (typeof window !== 'undefined') {
+  window.onerror = function(msg, url, line, col, error) {
+    console.error('GLOBAL ERROR:', msg, 'at', url, ':', line, ':', col, error);
+    return false;
+  };
+  window.onunhandledrejection = function(event) {
+    console.error('UNHANDLED REJECTION:', event.reason);
+  };
+}
 
 export default function App() {
+  console.log("StockStream App Rendering...");
+  
   const [products, setProducts] = useState<Product[]>(() => {
-    const saved = localStorage.getItem('inventory_products');
-    return saved ? JSON.parse(saved) : MOCK_PRODUCTS;
+    try {
+      const saved = localStorage.getItem('inventory_products');
+      if (!saved) return MOCK_PRODUCTS;
+      const parsed = JSON.parse(saved);
+      return Array.isArray(parsed) ? parsed : MOCK_PRODUCTS;
+    } catch (e) {
+      console.error('Failed to parse inventory from localStorage', e);
+      return MOCK_PRODUCTS;
+    }
   });
   const [activeTab, setActiveTab] = useState<'dashboard' | 'inventory'>('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
@@ -468,11 +503,10 @@ function ProductModal({
     if (!formData.name) return;
     setIsGenerating(true);
     try {
-      const response = await genAI.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: `Generate a 2-sentence professional inventory description for a product named "${formData.name}" in the "${formData.category}" category.`,
-      });
-      setFormData(prev => ({ ...prev, notes: response.text }));
+      const genAI = getGenAI();
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const response = await model.generateContent(`Generate a 2-sentence professional inventory description for a product named "${formData.name}" in the "${formData.category}" category.`);
+      setFormData(prev => ({ ...prev, notes: response.response.text() }));
     } catch (error) {
       console.error('Failed to generate description', error);
     } finally {
