@@ -7,3 +7,12 @@
   RewriteCond %{REQUEST_FILENAME} !-l
   RewriteRule . /index.html [L]
 </IfModule>
+
+# Fix MIME type issues for cPanel
+AddType application/javascript .js
+AddType application/javascript .mjs
+AddType text/css .css
+
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+</IfModule>
