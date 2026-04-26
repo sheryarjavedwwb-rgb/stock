@@ -39,20 +39,11 @@ let genAIInstance: GoogleGenAI | null = null;
 const getGenAI = () => {
   if (!genAIInstance) {
     const key = getApiKey();
+    // @ts-ignore
     genAIInstance = new GoogleGenAI({ apiKey: key || 'NO_KEY' });
   }
   return genAIInstance;
 };
-
-if (typeof window !== 'undefined') {
-  window.onerror = function(msg, url, line, col, error) {
-    console.error('GLOBAL ERROR:', msg, 'at', url, ':', line, ':', col, error);
-    return false;
-  };
-  window.onunhandledrejection = function(event) {
-    console.error('UNHANDLED REJECTION:', event.reason);
-  };
-}
 
 export default function App() {
   console.log("StockStream App Rendering...");

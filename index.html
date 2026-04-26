@@ -7,13 +7,22 @@
   </head>
   <body>
     <div id="root">
-      <div style="font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; color: #64748b;">
-        <div style="text-align: center;">
-          <h2 style="margin-bottom: 8px;">Initializing StockStream...</h2>
-          <p style="font-size: 14px; opacity: 0.7;">If this screen persists, check browser console for JavaScript errors.</p>
+      <div id="loading-screen" style="font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; color: #64748b;">
+        <div style="text-align: center; max-width: 400px; padding: 20px;">
+          <h2 style="margin-bottom: 8px;">StockStream</h2>
+          <p id="status-text" style="font-size: 14px; opacity: 0.7;">Initializing secure dashboard...</p>
+          <div id="error-display" style="display: none; margin-top: 20px; padding: 15px; background: #fee2e2; border: 1px solid #fecaca; border-radius: 8px; color: #991b1b; text-align: left; font-size: 12px; font-family: monospace; white-space: pre-wrap;"></div>
         </div>
       </div>
     </div>
+    <script>
+      window.onerror = function(msg, url, line, col, error) {
+        document.getElementById('status-text').innerText = 'Fatal Error during initialization';
+        var display = document.getElementById('error-display');
+        display.style.display = 'block';
+        display.innerText = msg + '\nline: ' + line + '\nfile: ' + url;
+      };
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
