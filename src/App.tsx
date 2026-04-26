@@ -27,9 +27,8 @@ import { cn } from './lib/utils';
 
 const getApiKey = () => {
   try {
-    // Use the exact string Vite's define targets
-    const key = process.env.GEMINI_API_KEY;
-    return key || '';
+    // @ts-ignore
+    return __GEMINI_API_KEY__ || '';
   } catch {
     return '';
   }
